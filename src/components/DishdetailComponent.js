@@ -4,6 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, Label, Row,Col } from 'reactstra
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 
 const required = val => val && val.length;
@@ -30,7 +31,7 @@ class CommentForm extends Component{
       
       handleSubmit(values) {
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render(){
@@ -120,7 +121,7 @@ function RenderDish( {dish} ) {
       return (
         
           <Card>
-            <CardImg top src={dish.image} alt={dish.name} />
+            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
             <CardBody>
               <CardTitle>{dish.name}</CardTitle>
               <CardText>{dish.description}</CardText>
@@ -131,7 +132,7 @@ function RenderDish( {dish} ) {
 }
 
 
-function RenderComments({comments, addComment, dishId}) {
+function RenderComments({comments, postComment, dishId}) {
       
       if (comments != null) {
         
@@ -149,7 +150,7 @@ function RenderComments({comments, addComment, dishId}) {
                 </ul>
                 
             ))}
-            <CommentForm dishId={dishId} addComment={addComment} />
+            <CommentForm dishId={dishId} postComment={postComment} />
           </div>
         ); 
       } else return <div />;
@@ -200,7 +201,7 @@ const DishDetail = (props) => {
                 <div className="col-12 col-md-5 m-1">
                   <h4>Comments</h4>       
                   <RenderComments comments={props.comments}
-                  addComment={props.addComment}
+                  postComment={props.postComment}
                   dishId={props.dish.id}
                   />
                 </div>    
